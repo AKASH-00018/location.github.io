@@ -1,28 +1,51 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8">
+  <title>Received Location</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 30px;
+    }
+    .box {
+      background: #020617;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+    }
+    a { color: #38bdf8; }
+  </style>
+</head>
 <body>
-<h3 id="status">📍 Requesting location permission…</h3>
+
+<div class="box">
+  <h2>📍 Location Received</h2>
+  <p id="data">Waiting for data…</p>
+</div>
 
 <script>
-navigator.geolocation.getCurrentPosition(
-  pos => {
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
-    const acc = pos.coords.accuracy;
+const params = new URLSearchParams(window.location.search);
 
-    // CHANGE URL AFTER CREATING RECEIVER SITE
-    const receiver =
-      "https://YOUR_USERNAME.github.io/location-receiver/receiver.html";
+const lat = params.get("lat");
+const lon = params.get("lon");
+const acc = params.get("acc");
 
-    window.location.href =
-      `${receiver}?lat=${lat}&lon=${lon}&acc=${acc}`;
-  },
-  () => {
-    document.getElementById("status").innerText =
-      "❌ Location permission denied";
-  },
-  { enableHighAccuracy: true }
-);
+if (lat && lon) {
+  document.getElementById("data").innerHTML = `
+    <b>Latitude:</b> ${lat}<br>
+    <b>Longitude:</b> ${lon}<br>
+    <b>Accuracy:</b> ${acc} meters<br><br>
+    <a href="https://maps.google.com/?q=${lat},${lon}" target="_blank">
+      🌍 View on Google Maps
+    </a>
+  `;
+} else {
+  document.getElementById("data").innerText =
+    "❌ No location data received";
+}
 </script>
 
 </body>
